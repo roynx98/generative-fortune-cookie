@@ -1,0 +1,72 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Python virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# PyInstaller
+dist/
+build/
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# pytest
+.cache/
+.pytest_cache/
+
+# coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# PyCharm & VSCode
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# SQLite
+*.sqlite3
+
+# Unit test and coverage reports
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Backup files
+*.bak
+*.swp
+*~
