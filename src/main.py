@@ -7,7 +7,7 @@ model = Transformer()
 model.load_state_dict(torch.load("model.pth"))
 
 def generate_text():
-    return inference.generate_text(model, 100)
+    return inference.generate_text(model, 500)
 
 demo = gr.Interface(
     fn=generate_text,

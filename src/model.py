@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as f
 
-from shared import vocab_size, context_size, n_embeddings
+from shared import vocab_size, context_size, n_embeddings, dropout
 
 class Transformer(nn.Module):
   def __init__(self):
@@ -46,6 +46,7 @@ class SingleHeadOfAttention(nn.Module):
     self.query = nn.Linear(n_embeddings, head_size, bias=False)
     self.value = nn.Linear(n_embeddings, head_size, bias=False)
     self.register_buffer("tril", torch.tril(torch.ones(context_size, context_size)))
+    self.dropout = nn.Dropout(dropout)
 
   def forward(self, x):
     B, T, C = x.shape
@@ -55,6 +56,7 @@ class SingleHeadOfAttention(nn.Module):
     wei = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)
     wei = wei.masked_fill(self.tril[:T, :T] == 0, float("-inf"))
     wei = f.softmax(wei, dim=-1)
+    wei = self.dropout(wei)
     return wei @ v
 
 class MultiHeadOfAttention(nn.Module):
@@ -62,10 +64,11 @@ class MultiHeadOfAttention(nn.Module):
     super().__init__()
     self.heads = nn.ModuleList([SingleHeadOfAttention(head_size) for _ in range(num_heads)])
     self.proj = nn.Linear(n_embeddings, n_embeddings)
+    self.dropout = nn.Dropout(dropout)
 
   def forward(self, x):
     res = torch.cat([h(x) for h in self.heads], dim=-1)
-    return self.proj(res)
+    return self.dropout(self.proj(res))
 
 class FeedForward(nn.Module):
   def __init__(self, n_embeddings):
@@ -74,7 +77,8 @@ class FeedForward(nn.Module):
     self.net = nn.Sequential(
       nn.Linear(n_embeddings, n_embeddings * 4),
       nn.ReLU(),
-      nn.Linear(n_embeddings * 4, n_embeddings)
+      nn.Linear(n_embeddings * 4, n_embeddings),
+      nn.Dropout(dropout)
     )
 
   def forward(self, x):

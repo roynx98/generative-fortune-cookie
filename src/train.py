@@ -5,7 +5,7 @@ from shared import context_size, device
 from train_data import get_batch, estimate_loss
 
 learning_rate = 1e-3
-batch_size = 8
+batch_size = 128
 max_steps = 5000
 eval_iters = 500
 
