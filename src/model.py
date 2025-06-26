@@ -11,6 +11,9 @@ class Transformer(nn.Module):
     self.position_embedding_table = nn.Embedding(context_size, n_embeddings)
     self.blocks = nn.Sequential(
       TransformerBlock(n_embeddings, 4),
+      TransformerBlock(n_embeddings, 4),
+      TransformerBlock(n_embeddings, 4),
+      TransformerBlock(n_embeddings, 4),
     )
     self.lm_head = nn.Linear(n_embeddings, vocab_size)
 

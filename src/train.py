@@ -5,7 +5,7 @@ from shared import device
 from train_data import get_batch, estimate_loss
 from  inference import generate_text
 
-learning_rate = 1e-3
+learning_rate = 1e-4
 batch_size = 32
 max_steps = 5000
 eval_iters = 500
@@ -33,6 +33,6 @@ for steps in range(1, max_steps + 1):
 
 end = time.time()
 print("Minutes training:", (end - start) / 60)
-print("Text generation example:", generate_text(model, 200))
+print("Text generation example:", generate_text(model, 500))
 
 torch.save(model.state_dict(), "model.pth")

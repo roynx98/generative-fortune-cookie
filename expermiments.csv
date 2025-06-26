@@ -1,5 +1,4 @@
-experiment_id,lr,batch_size,transfomer_blocks,n_embeddings,context_size,n_head,droput,training_rows,val_loss,train_loss,train_time,notes
-exp_01,1e-3,128,2,64,16,4,NA,1029,1.1668,1.8138,3.7,Overfitting
-exp_02,1e-3,128,1,64,16,4,NA,1029,1.4228,1.7568,2.0,
-exp_03,1e-3,128,1,64,16,4,0.2,1029,1.5829,1.7525,2.1,
-exp_04,1e-3,128,1,64,16,4,0.2,1693,1.5786,,,
+experiment_id,lr,batch_size,transfomer_blocks,n_embeddings,context_size,n_head,droput,training_rows,train_loss,val_loss,notes
+exp_01,1e-3,32,1,32,8,4,0.1,1144,1.9598,1.9934,
+exp_02,1e-3,32,4,32,8,4,0.1,1144,1.7995,1.8506,Scale block by 4
+exp_03,1e-4,32,4,256,64,4,0.1,1144,0.9837,1.5346,
