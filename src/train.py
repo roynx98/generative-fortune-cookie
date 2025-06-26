@@ -1,15 +1,17 @@
 import time
 import torch
 from model import Transformer
-from shared import context_size, device
+from shared import device
 from train_data import get_batch, estimate_loss
+from  inference import generate_text
 
 learning_rate = 1e-3
-batch_size = 128
+batch_size = 32
 max_steps = 5000
 eval_iters = 500
 
 model = Transformer()
+model = model.to(device)
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 start = time.time()
@@ -31,5 +33,6 @@ for steps in range(1, max_steps + 1):
 
 end = time.time()
 print("Minutes training:", (end - start) / 60)
+print("Text generation example:", generate_text(model, 200))
 
 torch.save(model.state_dict(), "model.pth")

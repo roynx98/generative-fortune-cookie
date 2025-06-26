@@ -8,7 +8,7 @@ val_data = data[n:]
 
 def get_batch(source, batch_size):
   data = train_data if source == "train" else val_data
-  rv = torch.randint(len(data) - context_size, (batch_size,))
+  rv = torch.randint(len(data) - context_size, (batch_size,), device=device)
   inputs = torch.stack([data[r:r+context_size] for r in rv])
   outputs = torch.stack([data[r+1:r+context_size+1] for r in rv])
   inputs, outputs = inputs.to(device), outputs.to(device)
