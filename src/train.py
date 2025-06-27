@@ -6,7 +6,7 @@ from train_data import get_batch, estimate_loss
 from  inference import generate_text
 
 learning_rate = 1e-4
-batch_size = 32
+batch_size = 64
 max_steps = 5000
 eval_iters = 500
 
