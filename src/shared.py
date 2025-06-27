@@ -3,6 +3,8 @@ import torch
 with open("input/fortune-messages.txt") as f:
   text = f.read()
 
+text = "".join([line + "%\n" for line in text.splitlines()])
+
 chars = sorted(list(set(text)))
 char_to_token = { c:i for i, c in enumerate(chars) }
 token_to_char = { i:c for i, c in enumerate(chars) }

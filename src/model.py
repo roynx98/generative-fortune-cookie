@@ -32,14 +32,19 @@ class Transformer(nn.Module):
     cost = f.cross_entropy(logits, target)
     return logits, cost
 
-  def generate(self, idx, new_tokens):
-    for _ in range(new_tokens):
+  def generate(self, idx):
+    while True:
       logits, _ = self(idx[:, -context_size:])
       logits = logits[:, -1, :]
       probs = f.softmax(logits, dim=-1)
       idx_next = torch.multinomial(probs, num_samples=1)
+
+      stop_token = 5
+      should_stop = idx_next[0, -1] == stop_token
+      if should_stop:
+        return idx
+
       idx = torch.cat((idx, idx_next), dim=1)
-    return idx
 
 class SingleHeadOfAttention(nn.Module):
   def __init__(self, head_size):
