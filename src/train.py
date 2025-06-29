@@ -5,39 +5,49 @@ from shared import device
 from train_data import get_batch, estimate_loss
 from inference import generate_sentence
 import boto3
-from config import BUCKET_NAME
+from config import BUCKET_NAME, OBJECT_KEY
 
-learning_rate = 1e-4
-batch_size = 64
-max_steps = 5000
-eval_iters = 500
+def upload_model_to_s3():
+    s3 = boto3.client("s3")
+    s3.upload_file("model.pth", BUCKET_NAME, OBJECT_KEY)
 
-model = Transformer()
-model = model.to(device)
 
-optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
-start = time.time()
-print("device", device)
-print("batch_size", batch_size)
+def train():
+    learning_rate = 1e-4
+    batch_size = 64
+    max_steps = 5000
+    eval_iters = 500
 
-for steps in range(1, max_steps + 1):
-  xb, yb = get_batch("train", batch_size)
+    model = Transformer()
+    model = model.to(device)
 
-  if steps % eval_iters == 0:
-    losses = estimate_loss(model, batch_size, eval_iters)
-    print(f"step {steps}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+    start = time.time()
+    print("device", device)
+    print("batch_size", batch_size)
 
-  logits, cost = model(xb, yb)
+    for steps in range(1, max_steps + 1):
+        xb, yb = get_batch("train", batch_size)
 
-  optimizer.zero_grad(set_to_none=True)
-  cost.backward()
-  optimizer.step()
+        if steps % eval_iters == 0:
+            losses = estimate_loss(model, batch_size, eval_iters)
+            print(
+                f"step {steps}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}"
+            )
 
-end = time.time()
-print("Minutes training:", (end - start) / 60)
-print("Sentence example:", generate_sentence(model))
+        logits, cost = model(xb, yb)
 
-torch.save(model.state_dict(), "model.pth")
+        optimizer.zero_grad(set_to_none=True)
+        cost.backward()
+        optimizer.step()
 
-s3 = boto3.client("s3") 
-s3.upload_file("model.pth", BUCKET_NAME, "cookie/model.pth")
+    end = time.time()
+    print("Minutes training:", (end - start) / 60)
+    print("Sentence example:", generate_sentence(model))
+
+    torch.save(model.state_dict(), "model.pth")
+    upload_model_to_s3
+
+
+if __name__ == "__main__":
+    train()
