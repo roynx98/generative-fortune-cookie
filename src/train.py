@@ -4,6 +4,8 @@ from model import Transformer
 from shared import device
 from train_data import get_batch, estimate_loss
 from inference import generate_sentence
+import boto3
+from config import BUCKET_NAME
 
 learning_rate = 1e-4
 batch_size = 64
@@ -36,3 +38,6 @@ print("Minutes training:", (end - start) / 60)
 print("Sentence example:", generate_sentence(model))
 
 torch.save(model.state_dict(), "model.pth")
+
+s3 = boto3.client("s3") 
+s3.upload_file("model.pth", BUCKET_NAME, "cookie/model.pth")
