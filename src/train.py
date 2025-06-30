@@ -46,7 +46,7 @@ def train():
     print("Sentence example:", generate_sentence(model))
 
     torch.save(model.state_dict(), "model.pth")
-    upload_model_to_s3
+    upload_model_to_s3()
 
 
 if __name__ == "__main__":
