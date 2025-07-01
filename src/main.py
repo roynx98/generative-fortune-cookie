@@ -2,25 +2,12 @@ import gradio as gr
 import inference
 from model import Transformer
 import torch
-import boto3
-from config import BUCKET_NAME, OBJECT_KEY, MODEL_LOCAL_FILE_PATH
-
-def download_model_from_s3():
-    s3 = boto3.client("s3")
-    try:
-        print("Downloading from S3...")
-        s3.download_file(BUCKET_NAME, OBJECT_KEY, MODEL_LOCAL_FILE_PATH)
-        print("Download complete.")
-    except Exception as e:
-        print(f"Failed to download file: {e}")
-        exit(1)
-
+from config import MODEL_LOCAL_FILE_PATH
+from shared import device
 
 def main():
-    download_model_from_s3()
-
     model = Transformer()
-    model.load_state_dict(torch.load(MODEL_LOCAL_FILE_PATH))
+    model.load_state_dict(torch.load(MODEL_LOCAL_FILE_PATH, map_location=torch.device(device)))
 
     custom_css = """
     .gradio-container {

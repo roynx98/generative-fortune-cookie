@@ -7,11 +7,6 @@ from inference import generate_sentence
 import boto3
 from config import BUCKET_NAME, OBJECT_KEY
 
-def upload_model_to_s3():
-    s3 = boto3.client("s3")
-    s3.upload_file("model.pth", BUCKET_NAME, OBJECT_KEY)
-
-
 def train():
     learning_rate = 1e-4
     batch_size = 64
@@ -46,8 +41,6 @@ def train():
     print("Sentence example:", generate_sentence(model))
 
     torch.save(model.state_dict(), "model.pth")
-    upload_model_to_s3()
-
 
 if __name__ == "__main__":
     train()
