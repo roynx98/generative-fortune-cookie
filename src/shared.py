@@ -14,6 +14,6 @@ decode = lambda l: "".join([token_to_char[t] for t in l])
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vocab_size = len(chars)
-n_embeddings = 256
-context_size = 64
+n_embeddings = 384
+context_size = 120
 dropout = 0.2

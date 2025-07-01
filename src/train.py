@@ -15,7 +15,7 @@ def upload_model_to_s3():
 def train():
     learning_rate = 1e-4
     batch_size = 64
-    max_steps = 5000
+    max_steps = 10000
     eval_iters = 500
 
     model = Transformer()
