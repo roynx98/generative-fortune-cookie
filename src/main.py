@@ -18,9 +18,13 @@ def main():
     .center-text {
         text-align: center;
     }
+    .settings, .divider {
+        display: none !important;
+    }
+    .primary { background-color: #4B69DB !important; }
     """
 
-    with gr.Blocks(css=custom_css) as demo:
+    with gr.Blocks(css=custom_css, theme='gstaff/sketch') as demo:
         gr.Markdown(
             """
             # Generative Fortune Cookie
@@ -30,7 +34,10 @@ def main():
 
         gr.Markdown(
             """
-            This app generates fortune cookie messages using a transformer model built from scratch with PyTorch, check out the code on [GitHub](https://github.com/roynx98/generative-fortune-cookie).
+            This app creates unique fortune cookie messages using a custom built transformer model developed from scratch with PyTorch. 
+
+            It's deployed on AWS using EC2 for computation and S3 for storage.
+            Explore the code on [GitHub!](https://github.com/roynx98/generative-fortune-cookie).
         """
         )
 
@@ -54,7 +61,7 @@ def main():
             elem_classes="center-text",
         )
 
-    demo.launch(server_name="0.0.0.0", server_port=7860)
+    demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
 
 if __name__ == "__main__":
     main()
